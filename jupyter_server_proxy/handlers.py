@@ -372,7 +372,7 @@ class ProxyHandler(WebSocketHandlerMixin, JupyterHandler):
                 force_instance=True, resolver=UnixResolver(self.unix_socket)
             )
         else:
-            client = httpclient.AsyncHTTPClient()
+            client = httpclient.AsyncHTTPClient(force_instance=True)
         # check if the request is stream request
         accept_header = self.request.headers.get('Accept')
         if accept_header == 'text/event-stream':
@@ -423,7 +423,8 @@ class ProxyHandler(WebSocketHandlerMixin, JupyterHandler):
                     header_callback=header_callback)
         
         # no timeout for stream api
-        req.request_timeout = 0
+        req.request_timeout = 7200
+        req.connect_timeout = 600
         
         try:
             response = await client.fetch(req, raise_error=False)
