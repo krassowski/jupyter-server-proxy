@@ -157,7 +157,29 @@ One of:
 - A callable that takes any {ref}`callable arguments <server-process:callable-arguments>`,
   and returns a dictionary of strings that are used & treated same as above.
 
+### `update_last_activity`
+
+Whether to report activity from the proxy to Jupyter Server. If _True_, Jupyter Server
+will be notified of new activity. This is primarily used by JupyterHub for idle detection and culling.
+
+Useful if you want to have a seperate way of determining activity through a
+proxied application.
+
+Defaults to _True_.
+
 (server-process:callable-arguments)=
+
+### `raw_socket_proxy`
+
+_True_ to proxy only websocket connections into raw stream connections.
+_False_ (default) if the proxied server speaks full HTTP.
+
+If _True_, the proxied server is treated a raw TCP (or unix socket) server that
+does not use HTTP.
+In this mode, only websockets are handled, and messages are sent to the backend
+server as raw stream data. This is similar to running a
+[websockify](https://github.com/novnc/websockify) wrapper.
+All other HTTP requests return 405.
 
 #### Callable arguments
 
